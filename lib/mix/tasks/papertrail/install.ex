@@ -10,7 +10,7 @@ defmodule Mix.Tasks.Papertrail.Install do
     path = Path.relative_to("priv/repo/migrations", Mix.Project.app_path())
     file = Path.join(path, "#{timestamp()}_#{underscore(AddVersions)}.exs")
     timestamps_type = Application.get_env(:paper_trail, :timestamps_type, :utc_datetime)
-    table_name = Application.compile_env(:paper_trail, :versions_table_name, "versions")
+    table_name = Application.get_env(:paper_trail, :versions_table_name, "versions")
 
     create_directory(path)
 
