@@ -10,6 +10,7 @@ defmodule Mix.Tasks.Papertrail.Install do
     path = Path.relative_to("priv/repo/migrations", Mix.Project.app_path())
     file = Path.join(path, "#{timestamp()}_#{underscore(AddVersions)}.exs")
     timestamps_type = Application.get_env(:paper_trail, :timestamps_type, :utc_datetime)
+    table_name = Application.compile_env(:paper_trail, :versions_table_name, "versions")
 
     create_directory(path)
 
@@ -18,7 +19,7 @@ defmodule Mix.Tasks.Papertrail.Install do
       use Ecto.Migration
 
       def change do
-        create table(:versions) do
+        create table(:#{table_name}) do
           add :event,        :string, null: false, size: 10
           add :item_type,    :string, null: false
           add :item_id,      :integer
@@ -26,16 +27,16 @@ defmodule Mix.Tasks.Papertrail.Install do
           add :originator_id, references(:users) # you can change :users to your own foreign key constraint
           add :origin,       :string, size: 50
           add :meta,         :map
-          
+
           # Configure timestamps type in config.ex :paper_trail :timestamps_type
           add :inserted_at,  :#{timestamps_type}, null: false
         end
 
-        create index(:versions, [:originator_id])
-        create index(:versions, [:item_id, :item_type])
+        create index(:#{table_name}, [:originator_id])
+        create index(:#{table_name}, [:item_id, :item_type])
         # Uncomment if you want to add the following indexes to speed up special queries:
-        # create index(:versions, [:event, :item_type])
-        # create index(:versions, [:item_type, :inserted_at])
+        # create index(:#{table_name}, [:event, :item_type])
+        # create index(:#{table_name}, [:item_type, :inserted_at])
       end
     end
     """)

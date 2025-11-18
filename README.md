@@ -122,6 +122,18 @@ The library source code is minimal and well tested. It is suggested to read the 
     # if you don't specify this PaperTrail will assume your repo name is Repo
     ```
 
+    **Optional:** Configure a custom table name for storing versions (defaults to `"versions"`):
+
+    ```elixir
+    config :paper_trail, versions_table_name: "audit_logs"
+    ```
+
+    **Note:** If you change the table name after installation, you'll need to recompile the dependency:
+
+    ```bash
+    mix deps.compile paper_trail --force
+    ```
+
 3.  Install and compile your dependency:
 
     ```mix deps.get && mix compile```
@@ -160,14 +172,16 @@ YES! Make sure you do the steps above.
 #### Configuring the types
 
 If you are using UUID or another type for your primary keys, you can configure
-the PaperTrail.Version schema to use it.
+the PaperTrail.Version schema to use it. You can also customize the table name
+used to store versions.
 
 ##### Example Config
 
 ```elixir
 config :paper_trail, item_type: Ecto.UUID,
                      originator_type: Ecto.UUID,
-                     originator_relationship_options: [references: :uuid]
+                     originator_relationship_options: [references: :uuid],
+                     versions_table_name: "audit_logs"
 ```
 
 ###### Example User
