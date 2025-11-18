@@ -2,13 +2,13 @@ defmodule PaperTrail.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/izelnakri/paper_trail"
-  @version "1.1.2"
+  @version "1.1.3"
 
   def project do
     [
       app: :paper_trail,
       version: @version,
-      elixir: "~> 1.17",
+      elixir: "~> 1.16",
       description: description(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
